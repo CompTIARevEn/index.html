@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CySA+ Proficiency Worksheet</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #C1272D;
+      --red-h: #A52025;
+      --purple: #6B2D5C;
+      --grad: linear-gradient(90deg, #C1272D, #6B2D5C);
+      --text: #222;
+      --muted: #666;
+      --light: #f5f5f5;
+      --border: #e5e7eb;
+      --white: #fff;
+      --font: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      --radius: 8px;
+    }
+
+    body {
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text);
+      background: #f0f0f0;
+    }
+
+    /* ── SCREEN LAYOUT ── */
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    /* ── STICKY HEADER ── */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .sticky-title { font-size: 13px; font-weight: 700; color: var(--red); }
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--red);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: background 0.15s;
+    }
+    .print-btn:hover { background: var(--red-h); }
+
+    /* ── WORKSHEET CARD ── */
+    .ws-card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    .ws-card-header {
+      background: var(--grad);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .ws-card-title { font-size: 16px; font-weight: 800; color: #fff; }
+    .ws-card-meta { font-size: 13px; color: rgba(255,255,255,.8); }
+
+    /* ── LEARNER INFO ── */
+    .learner-row {
+      display: flex;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      background: #fafafa;
+    }
+    .learner-field { flex: 1; min-width: 180px; }
+    .learner-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--purple);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .learner-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 9px 12px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text);
+      background: #fff;
+    }
+    .learner-input:focus { border-color: var(--red); outline: none; }
+    .learner-input[readonly] { background: #f0f0f0; color: var(--muted); }
+
+    /* ── PARTS ── */
+    .ws-body { padding: 0 24px 28px; }
+
+    .part-section {
+      margin-top: 28px;
+    }
+    .part-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--light);
+    }
+    .part-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--grad);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .part-info {}
+    .part-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .part-meta { font-size: 13px; color: var(--muted); }
+
+    /* ── PROMPTS ── */
+    .prompt-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .prompt-head {
+      background: var(--light);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .prompt-num {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--purple);
+      flex-shrink: 0;
+      padding-top: 1px;
+      min-width: 36px;
+    }
+    .prompt-q {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .prompt-scenario {
+      background: #f9fafb;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .prompt-scenario strong { color: var(--text); }
+    .prompt-body { padding: 10px 14px; }
+    textarea.ws-ta {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text);
+      background: #fafafa;
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.6;
+    }
+    textarea.ws-ta:focus { border-color: var(--red); outline: none; background: #fff; }
+    textarea.ws-ta.short { min-height: 60px; }
+    input.ws-in {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text);
+      background: #fafafa;
+    }
+    input.ws-in:focus { border-color: var(--red); outline: none; background: #fff; }
+
+    /* ── MATCHING / SEQUENCING ── */
+    .match-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f5f5f5;
+      flex-wrap: wrap;
+    }
+    .match-row:last-child { border-bottom: none; }
+    .match-label { font-size: 13px; flex: 1; min-width: 180px; color: var(--text); }
+    .ws-select {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--text);
+      background: #fafafa;
+    }
+    .ws-select:focus { border-color: var(--red); outline: none; }
+
+    /* ── PRINT INSTRUCTIONS ── */
+    .print-instructions {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-top: 24px;
+      font-size: 14px;
+      color: #166534;
+      line-height: 1.65;
+    }
+    .print-instructions strong { color: #15803d; }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      body { background: #fff; font-size: 13px; }
+      .sticky-header { display: none !important; }
+      .page-wrap { padding: 0; max-width: 100%; }
+      .ws-card { box-shadow: none; border-radius: 0; }
+      .ws-card-header { border-radius: 0; }
+      .prompt-card { break-inside: avoid; }
+      .part-section { break-inside: avoid; }
+      textarea.ws-ta {
+        border: 1px solid #ccc;
+        min-height: 60px;
+        background: #fff;
+      }
+      .print-instructions { display: none; }
+      .part-section { margin-top: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STICKY HEADER -->
+  <div class="sticky-header">
+    <span class="sticky-title">CySA+ Sales Enablement — Proficiency Worksheet</span>
+    <button class="print-btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Save as PDF
+    </button>
+  </div>
+
+  <div class="page-wrap">
+  <div class="ws-card">
+
+    <!-- HEADER -->
+    <div class="ws-card-header">
+      <span class="ws-card-title">CySA+ Sales Enablement — Proficiency Worksheet</span>
+      <span class="ws-card-meta">~15–20 min &nbsp;|&nbsp; 4 Parts</span>
+    </div>
+
+    <!-- LEARNER INFO -->
+    <div class="learner-row">
+      <div class="learner-field">
+        <label class="learner-label" for="ws-name">Your Name</label>
+        <input class="learner-input" type="text" id="ws-name" placeholder="First and last name">
+      </div>
+      <div class="learner-field">
+        <label class="learner-label" for="ws-date">Date</label>
+        <input class="learner-input" type="date" id="ws-date">
+      </div>
+      <div class="learner-field">
+        <label class="learner-label">Course</label>
+        <input class="learner-input" type="text" value="CySA+ Sales Enablement" readonly>
+      </div>
+    </div>
+
+    <div class="ws-body">
+
+      <!-- ══ PART 1 ══ -->
+      <div class="part-section">
+        <div class="part-header">
+          <div class="part-num">1</div>
+          <div class="part-info">
+            <div class="part-title">Product Knowledge</div>
+            <div class="part-meta">5 short-answer prompts &nbsp;·&nbsp; ~3 minutes</div>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">1.1</span>
+            <span class="prompt-q">Explain the difference between CertMaster Perform and CertMaster Learn. When would you recommend each, and for which customer type?</span>
+          </div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p1q1" placeholder="Your response here..."></textarea></div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">1.2</span>
+            <span class="prompt-q">Name the four CySA+ CS0-004 exam domains and their weights. Which is the largest, and what's new in that domain in V4?</span>
+          </div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p1q2" placeholder="Your response here..."></textarea></div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">1.3</span>
+            <span class="prompt-q">Name three things that are new or significantly expanded in CySA+ V4 that were not in V3. Why does each matter to a customer?</span>
+          </div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p1q3" placeholder="Your response here..."></textarea></div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">1.4</span>
+            <span class="prompt-q">Describe the Learning Progression Model and its three lab stages. Why is this a differentiator in a Government or Enterprise sales conversation?</span>
+          </div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p1q4" placeholder="Your response here..."></textarea></div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">1.5</span>
+            <span class="prompt-q">A Government customer asks why CySA+ specifically meets DoD 8140 requirements. What three facts do you lead with?</span>
+          </div>
+          <div class="prompt-body"><input class="ws-in" type="text" id="p1q5" placeholder="Your response here..."></div>
+        </div>
+      </div>
+
+      <!-- ══ PART 2 ══ -->
+      <div class="part-section">
+        <div class="part-header">
+          <div class="part-num">2</div>
+          <div class="part-info">
+            <div class="part-title">Customer Application</div>
+            <div class="part-meta">3 scenario prompts &nbsp;·&nbsp; ~5 minutes</div>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">2.1</span>
+            <span class="prompt-q">Government — Write your recommended approach, leading with the most relevant differentiator for this customer.</span>
+          </div>
+          <div class="prompt-scenario"><strong>Customer:</strong> Brigadier General Thomas Reyes, Director of Cyber Workforce, U.S. Space Force — responsible for credentialing 45 cybersecurity personnel under DoD 8140 by Q2 2027. 30 analysts have Security+ but no intermediate credential. Budget: $120K. Comparing CySA+ against GIAC GCIA.</div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p2q1" placeholder="Your response here..."></textarea></div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">2.2</span>
+            <span class="prompt-q">Enterprise — How do you respond?</span>
+          </div>
+          <div class="prompt-scenario"><strong>Customer:</strong> Marcus Chen, CISO, CloudFirst Technology — cloud-native SaaS company using AWS and GCP. 8-person security team. Marcus asks: "Does CySA+ cover cloud-specific tools and techniques, or is it primarily for on-premises environments?"</div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p2q2" placeholder="Your response here..."></textarea></div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">2.3</span>
+            <span class="prompt-q">Enterprise Academic Higher Ed — How do you respond?</span>
+          </div>
+          <div class="prompt-scenario"><strong>Customer:</strong> Dr. James Okafor, Dean of Engineering and Technology, Northshore Community College — 150 cybersecurity students in a two-year AAS program. 70% enter SOC analyst or IT security roles. Dr. Okafor asks: "How do I justify adding CySA+ as a graduation requirement to my faculty and board — and what's the ROI argument for students paying the exam fee?"</div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p2q3" placeholder="Your response here..."></textarea></div>
+        </div>
+      </div>
+
+      <!-- ══ PART 3 ══ -->
+      <div class="part-section">
+        <div class="part-header">
+          <div class="part-num">3</div>
+          <div class="part-info">
+            <div class="part-title">Demo &amp; Story Fluency</div>
+            <div class="part-meta">Sequencing, matching &amp; story purpose &nbsp;·&nbsp; ~4 minutes</div>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">3.1</span>
+            <span class="prompt-q">Number these demo steps 1 (first) through 5 (last) in the correct order for a 10-minute customer demo.</span>
+          </div>
+          <div class="prompt-body">
+            <div class="match-row">
+              <span class="match-label">Show a Simulation Lab — guided, step-by-step tool practice</span>
+              <select class="ws-select" id="seq1"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            </div>
+            <div class="match-row">
+              <span class="match-label">Show a VM Lab — contrast with simulation lab (live environment, no instructions)</span>
+              <select class="ws-select" id="seq2"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            </div>
+            <div class="match-row">
+              <span class="match-label">Open with a brief overview statement connecting the product to the customer's specific problem</span>
+              <select class="ws-select" id="seq3"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            </div>
+            <div class="match-row">
+              <span class="match-label">Show an Activity (performance-based task mirroring the exam)</span>
+              <select class="ws-select" id="seq4"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            </div>
+            <div class="match-row">
+              <span class="match-label">Close with a specific next step connected to the customer's problem</span>
+              <select class="ws-select" id="seq5"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">3.2</span>
+            <span class="prompt-q">Match each customer to the strongest narrative thread.</span>
+          </div>
+          <div class="prompt-body">
+            <div class="match-row">
+              <span class="match-label">A defense contractor credentialing 30 analysts under DoD 8140 by Q4</span>
+              <select class="ws-select" id="match1" style="flex:1;min-width:180px;"><option value="">Select thread...</option><option>Applied Skills</option><option>Vendor-Neutral Coverage</option><option>Compliance and Accreditation</option><option>Career Pathway</option></select>
+            </div>
+            <div class="match-row">
+              <span class="match-label">A community college adding CySA+ as a program exit requirement for cybersecurity graduates</span>
+              <select class="ws-select" id="match2" style="flex:1;min-width:180px;"><option value="">Select thread...</option><option>Applied Skills</option><option>Vendor-Neutral Coverage</option><option>Compliance and Accreditation</option><option>Career Pathway</option></select>
+            </div>
+            <div class="match-row">
+              <span class="match-label">A financial firm whose analysts failed the exam using self-study materials</span>
+              <select class="ws-select" id="match3" style="flex:1;min-width:180px;"><option value="">Select thread...</option><option>Applied Skills</option><option>Vendor-Neutral Coverage</option><option>Compliance and Accreditation</option><option>Career Pathway</option></select>
+            </div>
+            <div class="match-row">
+              <span class="match-label">A cloud-native company using AWS and GCP skeptical of "generic" certifications</span>
+              <select class="ws-select" id="match4" style="flex:1;min-width:180px;"><option value="">Select thread...</option><option>Applied Skills</option><option>Vendor-Neutral Coverage</option><option>Compliance and Accreditation</option><option>Career Pathway</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">3.3</span>
+            <span class="prompt-q">Write a one-sentence Story Purpose for this customer.</span>
+          </div>
+          <div class="prompt-scenario"><strong>Customer:</strong> Sofia Reyes, Director of Security Operations, Apex Healthcare Systems — 18-person security team. Two analysts recently left for roles requiring CySA+. Sofia wants to credential her remaining team to prevent further attrition and meet emerging compliance requirements from her health system's cyber insurance provider.</div>
+          <div class="prompt-body"><textarea class="ws-ta short" id="p3q3" placeholder="Your Story Purpose statement..."></textarea></div>
+        </div>
+      </div>
+
+      <!-- ══ PART 4 ══ -->
+      <div class="part-section">
+        <div class="part-header">
+          <div class="part-num">4</div>
+          <div class="part-info">
+            <div class="part-title">Applied Judgment</div>
+            <div class="part-meta">2 complex scenarios &nbsp;·&nbsp; ~5 minutes</div>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">4.1</span>
+            <span class="prompt-q">Three-way competitive evaluation (Government) — Write your recommendation and reasoning. Which thread do you lead with, which competitor do you prioritize countering, and how do you close?</span>
+          </div>
+          <div class="prompt-scenario"><strong>Situation:</strong> A large federal agency is comparing CySA+ (CertMaster Perform) against Microsoft SC-200 and GIAC GCIA. Requirements: (1) DoD 8140 approved credential, (2) hands-on skills validation beyond multiple choice, (3) total cost under $3,000 per analyst. The procurement officer is leaning toward GIAC GCIA because "SANS has a strong reputation in government."</div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p4q1" placeholder="Your recommendation and reasoning..."></textarea></div>
+        </div>
+
+        <div class="prompt-card">
+          <div class="prompt-head">
+            <span class="prompt-num">4.2</span>
+            <span class="prompt-q">Academic skeptic (Enterprise Academic Higher Ed) — How do you respond? Be specific about what CySA+ provides and how it complements project-based learning — not replaces it.</span>
+          </div>
+          <div class="prompt-scenario"><strong>Situation:</strong> A university department chair says: "Our industry advisory board says employers care more about hands-on project experience than certifications. Why should we add CySA+ when our students already build projects in our capstone courses?"</div>
+          <div class="prompt-body"><textarea class="ws-ta" id="p4q2" placeholder="Your response..."></textarea></div>
+        </div>
+      </div>
+
+      <!-- PRINT INSTRUCTIONS -->
+      <div class="print-instructions">
+        <strong>To save your completed worksheet as PDF:</strong> Click the <strong>Save as PDF</strong> button at the top of the page, or press <strong>Ctrl+P</strong> (Windows) / <strong>Cmd+P</strong> (Mac) and select <strong>Save as PDF</strong> as the destination. All responses on this page will be captured. Submit the PDF to your sales enablement manager for evaluation.
+      </div>
+
+    </div><!-- /ws-body -->
+  </div><!-- /ws-card -->
+  </div><!-- /page-wrap -->
+
+</body>
+</html>
