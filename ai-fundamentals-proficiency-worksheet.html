@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Fundamentals — Proficiency Worksheet</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#C1272D;
+  --red-h:#A52025;
+  --purple:#6B2D5C;
+  --grad:linear-gradient(90deg,#C1272D,#6B2D5C);
+  --text:#222222;
+  --muted:#666666;
+  --bg:#F5F5F5;
+  --white:#FFFFFF;
+  --border:#e5e7eb;
+  --font:'Inter','Helvetica Neue',Arial,sans-serif;
+}
+body{
+  font-family:var(--font);
+  font-size:16px;
+  line-height:1.6;
+  color:var(--text);
+  background:#f8f8f8;
+  margin:0;
+  padding:0;
+}
+
+/* ── LAYOUT ── */
+.page-wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+
+/* ── COVER ── */
+.cover{
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:48px 40px;
+  margin-bottom:40px;
+  text-align:center;
+}
+.cover-eyebrow{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  color:#888888;
+  margin-bottom:16px;
+}
+.cover-title{
+  font-size:clamp(28px,4vw,42px);
+  font-weight:800;
+  line-height:1.15;
+  margin-bottom:12px;
+  background:linear-gradient(90deg,#C1272D,#6B2D5C);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.cover-sub{
+  font-size:16px;
+  color:#444444;
+  line-height:1.6;
+  max-width:520px;
+  margin:0 auto 24px;
+}
+.cover-pills{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.cover-pill{
+  background:#F5F5F5;
+  border-radius:50px;
+  padding:5px 16px;
+  font-size:13px;
+  color:#444444;
+  font-weight:500;
+}
+
+/* ── LEARNER INFO ── */
+.learner-card{
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:24px 28px;
+  margin-bottom:32px;
+}
+.learner-card h3{
+  font-size:14px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:16px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-size:11px;
+  color:var(--red);
+}
+.learner-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.learner-field label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-bottom:5px;
+}
+.learner-field input,
+.learner-field select{
+  width:100%;
+  padding:10px 14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-family:var(--font);
+  font-size:14px;
+  color:var(--text);
+  background:#ffffff;
+  outline:none;
+  transition:border-color .15s;
+}
+.learner-field input:focus,
+.learner-field select:focus{border-color:var(--red)}
+@media(max-width:560px){.learner-grid{grid-template-columns:1fr}}
+
+/* ── PROGRESS NAV ── */
+.progress-nav{
+  display:flex;
+  gap:6px;
+  margin-bottom:32px;
+  flex-wrap:wrap;
+}
+.nav-step{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 16px;
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:50px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  cursor:pointer;
+  transition:all .15s;
+  text-decoration:none;
+}
+.nav-step:hover{border-color:var(--red);color:var(--red)}
+.nav-step.active{background:var(--red);border-color:var(--red);color:#ffffff}
+.nav-step .step-num{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:rgba(255,255,255,.25);
+  font-size:11px;
+  font-weight:800;
+}
+.nav-step:not(.active) .step-num{
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* ── PART SECTIONS ── */
+.part-section{display:none}
+.part-section.active{display:block}
+
+/* ── PART HEADER ── */
+.part-header{
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:12px 12px 0 0;
+  border-bottom:none;
+  padding:20px 28px;
+}
+.part-tag{
+  display:inline-block;
+  background:var(--grad);
+  color:#ffffff;
+  font-size:11px;
+  font-weight:700;
+  padding:3px 12px;
+  border-radius:50px;
+  margin-bottom:10px;
+}
+.part-title{
+  font-size:26px;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:6px;
+}
+.part-meta{
+  font-size:13px;
+  color:var(--muted);
+  font-style:italic;
+}
+
+/* ── PROGRESS BAR ── */
+.part-progress{
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-top:none;
+  border-bottom:none;
+  padding:0 28px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.part-progress-label{font-size:12px;color:var(--muted);white-space:nowrap}
+.part-progress-track{flex:1;height:4px;background:var(--bg);border-radius:50px;overflow:hidden}
+.part-progress-fill{height:100%;background:var(--grad);border-radius:50px}
+.part-progress-pct{font-size:12px;font-weight:700;color:var(--red);white-space:nowrap}
+
+/* ── PROMPT CARDS ── */
+.prompts-wrap{
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-top:none;
+  border-radius:0 0 12px 12px;
+  padding:20px 28px 28px;
+}
+
+.prompt-card{
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:20px;
+  border:1px solid var(--border);
+}
+.prompt-card:last-child{margin-bottom:0}
+
+.prompt-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  color:var(--red);
+}
+.prompt-label .channel-tag{
+  display:inline-block;
+  font-size:10px;
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:50px;
+  margin-left:4px;
+}
+.ch-acad{background:#EDE9FE;color:#5b21b6}
+.ch-gov{background:#DCFCE7;color:#166534}
+.ch-ent{background:#FEF3C7;color:#92400e}
+.ch-part{background:#DBEAFE;color:#1e40af}
+
+.prompt-body{padding:16px 18px}
+.prompt-question{
+  font-size:15px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.55;
+  margin-bottom:12px;
+}
+.prompt-question em{font-style:normal;color:var(--red);font-weight:700}
+.prompt-question em.pur{color:var(--purple)}
+.prompt-scenario{
+  background:var(--bg);
+  border-radius:8px;
+  padding:13px 16px;
+  font-size:14px;
+  color:#333333;
+  line-height:1.65;
+  margin-bottom:12px;
+}
+.prompt-scenario strong{font-weight:700;color:var(--text)}
+
+textarea{
+  width:100%;
+  min-height:100px;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-family:var(--font);
+  font-size:14px;
+  color:var(--text);
+  resize:vertical;
+  outline:none;
+  transition:border-color .15s;
+  line-height:1.6;
+}
+textarea:focus{border-color:var(--red)}
+textarea.tall{min-height:130px}
+
+/* ── MATCHING ── */
+.match-item{
+  margin-bottom:14px;
+}
+.match-item:last-child{margin-bottom:0}
+.match-pain{
+  font-size:14px;
+  font-style:italic;
+  color:var(--text);
+  margin-bottom:6px;
+  padding-left:2px;
+}
+.match-pain::before{content:'"';color:var(--red);font-weight:700}
+.match-pain::after{content:'"';color:var(--red);font-weight:700}
+select.match-select{
+  width:100%;
+  padding:10px 14px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-family:var(--font);
+  font-size:14px;
+  color:var(--text);
+  background:#ffffff;
+  outline:none;
+  cursor:pointer;
+  transition:border-color .15s;
+  appearance:auto;
+}
+select.match-select:focus{border-color:var(--red)}
+
+/* ── CHANNEL TABS (Part 2) ── */
+.channel-tabs-nav{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.ch-tab-btn{
+  padding:7px 16px;
+  font-family:var(--font);
+  font-size:13px;
+  font-weight:600;
+  color:var(--muted);
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:50px;
+  cursor:pointer;
+  transition:all .15s;
+}
+.ch-tab-btn.active-acad{background:#5b21b6;color:#fff;border-color:#5b21b6}
+.ch-tab-btn.active-gov{background:#166534;color:#fff;border-color:#166534}
+.ch-tab-btn.active-ent{background:#92400e;color:#fff;border-color:#92400e}
+.ch-tab-btn.active-part{background:#1e40af;color:#fff;border-color:#1e40af}
+.ch-tab-btn:hover:not([class*="active"]){border-color:var(--red);color:var(--red)}
+.ch-tab-panel{display:none}
+.ch-tab-panel.active{display:block}
+.ch-tab-note{
+  font-size:13px;
+  color:var(--muted);
+  font-style:italic;
+  margin-bottom:16px;
+  padding:10px 14px;
+  background:var(--bg);
+  border-radius:8px;
+}
+
+/* ── PART NAV BUTTONS ── */
+.part-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:24px;
+  gap:12px;
+}
+.btn-prev,
+.btn-next{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:11px 24px;
+  border-radius:50px;
+  font-family:var(--font);
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  transition:all .15s;
+}
+.btn-prev{
+  background:#ffffff;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-prev:hover{border-color:var(--red);color:var(--red)}
+.btn-next{
+  background:var(--red);
+  color:#ffffff;
+}
+.btn-next:hover{background:var(--red-h)}
+.btn-download{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:11px 28px;
+  border-radius:50px;
+  font-family:var(--font);
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  background:var(--grad);
+  color:#ffffff;
+  transition:opacity .15s,transform .1s;
+}
+.btn-download:hover{opacity:.9;transform:scale(1.02)}
+
+/* ── REVIEW PAGE ── */
+.review-section{
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:24px 28px;
+  margin-bottom:20px;
+}
+.review-section h3{
+  font-size:13px;
+  font-weight:700;
+  color:var(--red);
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  margin-bottom:16px;
+}
+.review-item{
+  margin-bottom:16px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--bg);
+}
+.review-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.review-q{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.review-a{font-size:14px;color:var(--text);line-height:1.6;white-space:pre-wrap;min-height:20px}
+
+@media print{
+  .progress-nav,.part-nav,.nav-step{display:none}
+  .part-section{display:block!important}
+  .review-section{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">CompTIA Sales Enablement · Proficiency Worksheet</div>
+  <div class="cover-title">AI Fundamentals<br>Proficiency Worksheet</div>
+  <p class="cover-sub">Complete all four parts and submit to your sales enablement manager for evaluation. Results within 5 business days.</p>
+  <div class="cover-pills">
+    <span class="cover-pill">4 Parts</span>
+    <span class="cover-pill">~20–25 min</span>
+    <span class="cover-pill">Certificate of Proficiency</span>
+  </div>
+</div>
+
+<!-- LEARNER INFO -->
+<div class="learner-card">
+  <h3>Your Information</h3>
+  <div class="learner-grid">
+    <div class="learner-field"><label>Full Name</label><input type="text" id="f-name" placeholder="First Last"></div>
+    <div class="learner-field">
+      <label>Primary Channel</label>
+      <select id="f-channel">
+        <option value="">Select your channel</option>
+        <option value="Academic">Academic</option>
+        <option value="Government">Government</option>
+        <option value="Enterprise">Enterprise</option>
+        <option value="Partner Delivery">Partner Delivery</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS NAV -->
+<div class="progress-nav">
+  <a class="nav-step active" onclick="showPart(1)" href="#">
+    <span class="step-num">1</span> Product Knowledge
+  </a>
+  <a class="nav-step" onclick="showPart(2)" href="#">
+    <span class="step-num">2</span> Customer Application
+  </a>
+  <a class="nav-step" onclick="showPart(3)" href="#">
+    <span class="step-num">3</span> Demo &amp; Story Fluency
+  </a>
+  <a class="nav-step" onclick="showPart(4)" href="#">
+    <span class="step-num">4</span> Applied Judgment
+  </a>
+  <a class="nav-step" onclick="showPart(5)" href="#">
+    <span class="step-num">✓</span> Review &amp; Download
+  </a>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PART 1 — PRODUCT KNOWLEDGE
+═══════════════════════════════════════ -->
+<div class="part-section active" id="part1">
+  <div class="part-header">
+    <div class="part-tag">Part 1 of 4</div>
+    <div class="part-title">Product Knowledge</div>
+    <div class="part-meta">~5 min · Short-answer prompts · Demonstrates foundational product accuracy</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Part 1 of 4</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:25%"></div></div>
+    <span class="part-progress-pct">25%</span>
+  </div>
+  <div class="prompts-wrap">
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.1</div>
+      <div class="prompt-body">
+        <div class="prompt-question">In 2–3 sentences, describe what AI Fundamentals is and who it is designed for.</div>
+        <textarea id="p1-1" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.2</div>
+      <div class="prompt-body">
+        <div class="prompt-question">What is a CompCert, and how is it different from a CompTIA certification exam?</div>
+        <textarea id="p1-2" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.3</div>
+      <div class="prompt-body">
+        <div class="prompt-question">Name the confirmed learning product offering available with AI Fundamentals V1 and describe two of its key capabilities.</div>
+        <textarea id="p1-3" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.4</div>
+      <div class="prompt-body">
+        <div class="prompt-question">What can you show a customer when demonstrating AI Fundamentals? List the key things you would walk them through in a demo.</div>
+        <textarea id="p1-4" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.5</div>
+      <div class="prompt-body">
+        <div class="prompt-question">How is AI Fundamentals positioned differently from Coursera for Campus in a competitive conversation?</div>
+        <textarea id="p1-5" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="part-nav">
+    <span></span>
+    <button class="btn-next" onclick="showPart(2)">Next: Customer Application →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PART 2 — CUSTOMER APPLICATION
+═══════════════════════════════════════ -->
+<div class="part-section" id="part2">
+  <div class="part-header">
+    <div class="part-tag">Part 2 of 4</div>
+    <div class="part-title">Customer Application</div>
+    <div class="part-meta">~5 min · Channel-specific scenarios · Complete at least two tabs</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Part 2 of 4</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:50%"></div></div>
+    <span class="part-progress-pct">50%</span>
+  </div>
+  <div class="prompts-wrap">
+
+    <div class="ch-tab-note">Select at least two channels and complete the scenario for each. Start with your primary channel, then complete at least one more.</div>
+
+    <div class="channel-tabs-nav">
+      <button class="ch-tab-btn" id="chtab-acad" onclick="switchChTab('acad')">Academic</button>
+      <button class="ch-tab-btn" id="chtab-gov" onclick="switchChTab('gov')">Government</button>
+      <button class="ch-tab-btn" id="chtab-ent" onclick="switchChTab('ent')">Enterprise</button>
+      <button class="ch-tab-btn" id="chtab-part" onclick="switchChTab('part')">Partner Delivery</button>
+    </div>
+
+    <!-- ACADEMIC -->
+    <div class="ch-tab-panel" id="chtab-panel-acad">
+      <div class="prompt-card">
+        <div class="prompt-label">Prompt 2.1 <span class="channel-tag ch-acad">Academic</span></div>
+        <div class="prompt-body">
+          <div class="prompt-scenario"><strong>A Dean of General Education at a mid-size university</strong> tells you: "We've been talking about AI for two years but haven't made a decision. Faculty aren't confident teaching it, and we don't want to require a course that needs expensive software subscriptions." What do you emphasize and in what order?</div>
+          <textarea id="p2-acad" class="tall" placeholder="Write your approach here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOVERNMENT -->
+    <div class="ch-tab-panel" id="chtab-panel-gov">
+      <div class="prompt-card">
+        <div class="prompt-label">Prompt 2.2 <span class="channel-tag ch-gov">Government</span></div>
+        <div class="prompt-body">
+          <div class="prompt-scenario"><strong>A Workforce Director at a state agency</strong> says: "We want AI training for non-technical staff but our IT security team will never approve access to external AI tools on agency networks." What is your positioning?</div>
+          <textarea id="p2-gov" class="tall" placeholder="Write your approach here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="ch-tab-panel" id="chtab-panel-ent">
+      <div class="prompt-card">
+        <div class="prompt-label">Prompt 2.3 <span class="channel-tag ch-ent">Enterprise</span></div>
+        <div class="prompt-body">
+          <div class="prompt-scenario"><strong>An L&D Director at a financial services firm</strong> says: "Leadership has mandated AI readiness across all departments — operations, compliance, and client services — but we have no curriculum and our IT team has blocked external AI tools on company devices." How do you position AI Fundamentals?</div>
+          <textarea id="p2-ent" class="tall" placeholder="Write your approach here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARTNER DELIVERY -->
+    <div class="ch-tab-panel" id="chtab-panel-part">
+      <div class="prompt-card">
+        <div class="prompt-label">Prompt 2.4 <span class="channel-tag ch-part">Partner Delivery</span></div>
+        <div class="prompt-body">
+          <div class="prompt-scenario"><strong>A partner company that distributes content to 80 community colleges</strong> says: "AI is our #1 customer request but we don't have bandwidth to build AI content ourselves." What is your response?</div>
+          <textarea id="p2-part" class="tall" placeholder="Write your approach here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="part-nav">
+    <button class="btn-prev" onclick="showPart(1)">← Previous</button>
+    <button class="btn-next" onclick="showPart(3)">Next: Demo &amp; Story Fluency →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PART 3 — DEMO & STORY FLUENCY
+═══════════════════════════════════════ -->
+<div class="part-section" id="part3">
+  <div class="part-header">
+    <div class="part-tag">Part 3 of 4</div>
+    <div class="part-title">Demo &amp; Story Fluency</div>
+    <div class="part-meta">~7 min · Feature matching, story construction, and demo positioning</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Part 3 of 4</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:75%"></div></div>
+    <span class="part-progress-pct">75%</span>
+  </div>
+  <div class="prompts-wrap">
+
+    <!-- MATCHING -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 3.1 — Feature-to-Pain Point Matching</div>
+      <div class="prompt-body">
+        <div class="prompt-question">Match each customer pain point to the single AI Fundamentals feature that addresses it most directly.</div>
+
+        <div class="match-item">
+          <div class="match-pain">A customer cannot allow learners to share organizational data with external AI tools.</div>
+          <select class="match-select" id="m1">
+            <option value="">Select the best match...</option>
+            <option>AI Scenario Activities inside CertMaster Learn (no external access required)</option>
+            <option>CompCert — Competency Certificate issued by CompTIA</option>
+            <option>Vendor-neutral, 3-credit course designed for any major</option>
+            <option>Structured, auto-graded AI practice with a defined Learning Progression</option>
+            <option>Credit-bearing course aligned to standard academic course structures</option>
+            <option>Turnkey, institution-ready course with no custom development required</option>
+          </select>
+        </div>
+
+        <div class="match-item">
+          <div class="match-pain">A customer needs their learners to demonstrate AI capability to an external audience — not just finish a course.</div>
+          <select class="match-select" id="m2">
+            <option value="">Select the best match...</option>
+            <option>AI Scenario Activities inside CertMaster Learn (no external access required)</option>
+            <option>CompCert — Competency Certificate issued by CompTIA</option>
+            <option>Vendor-neutral, 3-credit course designed for any major</option>
+            <option>Structured, auto-graded AI practice with a defined Learning Progression</option>
+            <option>Credit-bearing course aligned to standard academic course structures</option>
+            <option>Turnkey, institution-ready course with no custom development required</option>
+          </select>
+        </div>
+
+        <div class="match-item">
+          <div class="match-pain">An academic institution needs consistent AI instruction across 40+ programs without building 40 separate courses.</div>
+          <select class="match-select" id="m3">
+            <option value="">Select the best match...</option>
+            <option>AI Scenario Activities inside CertMaster Learn (no external access required)</option>
+            <option>CompCert — Competency Certificate issued by CompTIA</option>
+            <option>Vendor-neutral, 3-credit course designed for any major</option>
+            <option>Structured, auto-graded AI practice with a defined Learning Progression</option>
+            <option>Credit-bearing course aligned to standard academic course structures</option>
+            <option>Turnkey, institution-ready course with no custom development required</option>
+          </select>
+        </div>
+
+        <div class="match-item">
+          <div class="match-pain">A government agency needs a training solution that procurement teams can approve without favoring a specific AI vendor or platform.</div>
+          <select class="match-select" id="m4">
+            <option value="">Select the best match...</option>
+            <option>AI Scenario Activities inside CertMaster Learn (no external access required)</option>
+            <option>CompCert — Competency Certificate issued by CompTIA</option>
+            <option>Vendor-neutral, 3-credit course designed for any major</option>
+            <option>Structured, auto-graded AI practice with a defined Learning Progression</option>
+            <option>Credit-bearing course aligned to standard academic course structures</option>
+            <option>Turnkey, institution-ready course with no custom development required</option>
+          </select>
+        </div>
+
+        <div class="match-item">
+          <div class="match-pain">A university needs a course that embeds into general education or elective structures and satisfies institutional credit requirements.</div>
+          <select class="match-select" id="m5">
+            <option value="">Select the best match...</option>
+            <option>AI Scenario Activities inside CertMaster Learn (no external access required)</option>
+            <option>CompCert — Competency Certificate issued by CompTIA</option>
+            <option>Vendor-neutral, 3-credit course designed for any major</option>
+            <option>Structured, auto-graded AI practice with a defined Learning Progression</option>
+            <option>Credit-bearing course aligned to standard academic course structures</option>
+            <option>Turnkey, institution-ready course with no custom development required</option>
+          </select>
+        </div>
+
+        <div class="match-item">
+          <div class="match-pain">A partner company needs an AI course they can deploy immediately to their institutional clients without internal curriculum development.</div>
+          <select class="match-select" id="m6">
+            <option value="">Select the best match...</option>
+            <option>AI Scenario Activities inside CertMaster Learn (no external access required)</option>
+            <option>CompCert — Competency Certificate issued by CompTIA</option>
+            <option>Vendor-neutral, 3-credit course designed for any major</option>
+            <option>Structured, auto-graded AI practice with a defined Learning Progression</option>
+            <option>Credit-bearing course aligned to standard academic course structures</option>
+            <option>Turnkey, institution-ready course with no custom development required</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- STORY FRAMING -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 3.2 — Story Framing</div>
+      <div class="prompt-body">
+        <div class="prompt-question">A buyer tells you: "We know AI is important — we've been talking about it internally for over a year — but we haven't moved because we don't have a clear solution that works for our whole organization, not just one department." Write your opening story framing for this conversation.</div>
+        <textarea id="p3-story" style="min-height:150px" placeholder="Write your opening story framing here..."></textarea>
+      </div>
+    </div>
+
+    <!-- DEMO ARC -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 3.3 — Demo Arc</div>
+      <div class="prompt-body">
+        <div class="prompt-question">Describe the four-step demo walkthrough path for AI Fundamentals in order, and explain what you would say at the AI Scenario Activity step to make it land with a buyer.</div>
+        <textarea id="p3-demo" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="part-nav">
+    <button class="btn-prev" onclick="showPart(2)">← Previous</button>
+    <button class="btn-next" onclick="showPart(4)">Next: Applied Judgment →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PART 4 — APPLIED JUDGMENT
+═══════════════════════════════════════ -->
+<div class="part-section" id="part4">
+  <div class="part-header">
+    <div class="part-tag">Part 4 of 4</div>
+    <div class="part-title">Applied Judgment</div>
+    <div class="part-meta">~5 min · Complete the scenario that matches your primary channel</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Part 4 of 4</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:100%"></div></div>
+    <span class="part-progress-pct">100%</span>
+  </div>
+  <div class="prompts-wrap">
+
+    <div class="ch-tab-note">Complete the scenario that matches your primary channel. If your channel is not listed or you want additional practice, complete more than one.</div>
+
+    <!-- ACADEMIC -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 4.1 <span class="channel-tag ch-acad">Academic</span></div>
+      <div class="prompt-body">
+        <div class="prompt-scenario">You're 20 minutes into a demo when the Provost says: "This all looks great, but I need to know — can we make the credential optional? Some of our faculty think the Competency Assessment is too high-stakes for a general education course." What do you recommend and why?</div>
+        <textarea id="p4-acad" style="min-height:130px" placeholder="Write your recommendation and reasoning..."></textarea>
+      </div>
+    </div>
+
+    <!-- GOVERNMENT -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 4.2 <span class="channel-tag ch-gov">Government</span></div>
+      <div class="prompt-body">
+        <div class="prompt-scenario">A government agency contact says they want to move forward but their procurement process requires a vendor-neutral, open-standard training solution — and they're not sure if CompTIA qualifies. How do you respond?</div>
+        <textarea id="p4-gov" style="min-height:130px" placeholder="Write your response..."></textarea>
+      </div>
+    </div>
+
+    <!-- PARTNER DELIVERY -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 4.3 <span class="channel-tag ch-part">Partner Delivery</span></div>
+      <div class="prompt-body">
+        <div class="prompt-scenario">You've qualified a strong Partner Delivery opportunity — a company that serves 200 institutions and wants to resell AI Fundamentals. But they say: "We want to white-label this and put our own brand on the credential." What do you say?</div>
+        <textarea id="p4-part" style="min-height:130px" placeholder="Write your response..."></textarea>
+      </div>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 4.4 <span class="channel-tag ch-ent">Enterprise</span></div>
+      <div class="prompt-body">
+        <div class="prompt-scenario">You've presented AI Fundamentals to an Enterprise L&D team and they respond positively — but the CHRO says: "Before we approve this, we need to know: how do we measure whether this training actually changed behavior on the job? A certificate doesn't tell us that." How do you respond?</div>
+        <textarea id="p4-ent" style="min-height:130px" placeholder="Write your response..."></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="part-nav">
+    <button class="btn-prev" onclick="showPart(3)">← Previous</button>
+    <button class="btn-next" onclick="showPart(5)">Review &amp; Download →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PART 5 — REVIEW & DOWNLOAD
+═══════════════════════════════════════ -->
+<div class="part-section" id="part5">
+  <div class="part-header">
+    <div class="part-tag">Review &amp; Submit</div>
+    <div class="part-title">Review Your Worksheet</div>
+    <div class="part-meta">Review your answers below, then save as a PDF and send to Revenue Enablement.</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Complete</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:100%"></div></div>
+    <span class="part-progress-pct">✓</span>
+  </div>
+  <div class="prompts-wrap">
+    <div style="background:#F5F5F5;border-radius:10px;padding:16px 20px;margin-bottom:20px;border-left:3px solid #C1272D;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#C1272D;margin-bottom:8px;">How to Submit</div>
+      <p style="font-size:14px;color:#333;line-height:1.65;margin-bottom:8px;"><strong>Step 1:</strong> Review your answers below. Make any final edits by navigating back through the sections using the buttons above.</p>
+      <p style="font-size:14px;color:#333;line-height:1.65;margin-bottom:8px;"><strong>Step 2:</strong> Click <strong>Save as PDF</strong> below. When your browser print dialog opens, set the destination to <strong>Save as PDF</strong> and save the file to your computer.</p>
+      <p style="font-size:14px;color:#333;line-height:1.65;"><strong>Step 3:</strong> Email the PDF to <strong>Revenue Enablement</strong> with the subject line: <em>AI Fundamentals Proficiency Worksheet — [Your Name]</em>. Results will be returned within 5 business days.</p>
+    </div>
+    <div id="review-output"></div>
+  </div>
+  <div class="part-nav">
+    <button class="btn-prev" onclick="showPart(4)">← Previous</button>
+    <button class="btn-download" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Save as PDF
+    </button>
+  </div>
+</div>
+
+</div><!-- end page-wrap -->
+
+<script>
+// ── NAVIGATION ──
+function showPart(n){
+  document.querySelectorAll('.part-section').forEach(function(s){s.classList.remove('active')});
+  document.querySelectorAll('.nav-step').forEach(function(s){s.classList.remove('active')});
+  document.getElementById('part'+n).classList.add('active');
+  document.querySelectorAll('.nav-step')[n-1].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(n===5) buildReview();
+}
+
+// ── CHANNEL TABS (Part 2) ──
+function switchChTab(ch){
+  document.querySelectorAll('.ch-tab-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.ch-tab-btn').forEach(function(b){
+    b.className='ch-tab-btn';
+  });
+  document.getElementById('chtab-panel-'+ch).classList.add('active');
+  var btn=document.getElementById('chtab-'+ch);
+  btn.classList.add('active-'+ch);
+}
+
+// ── BUILD REVIEW ──
+function buildReview(){
+  var html='';
+  var name=v('f-name')||'—';
+  var channel=vsel('f-channel')||'—';
+
+  html+='<div class="review-section">';
+  html+='<h3>Learner Information</h3>';
+  html+='<div class="review-item"><div class="review-q">Name</div><div class="review-a">'+name+'</div></div>';
+  html+='<div class="review-item"><div class="review-q">Primary Channel</div><div class="review-a">'+channel+'</div></div>';
+  html+='</div>';
+
+  html+='<div class="review-section">';
+  html+='<h3>Part 1 — Product Knowledge</h3>';
+  html+=ri('1.1 — What is AI Fundamentals?',ta('p1-1'));
+  html+=ri('1.2 — What is a CompCert?',ta('p1-2'));
+  html+=ri('1.3 — Confirmed learning product and capabilities',ta('p1-3'));
+  html+=ri('1.4 — What you can show in a demo',ta('p1-4'));
+  html+=ri('1.5 — Competitive position vs. Coursera for Campus',ta('p1-5'));
+  html+='</div>';
+
+  html+='<div class="review-section">';
+  html+='<h3>Part 2 — Customer Application</h3>';
+  var p2fields=[['Academic — Dean scenario',ta('p2-acad')],['Government — Workforce Director scenario',ta('p2-gov')],['Enterprise — L&D Director scenario',ta('p2-ent')],['Partner Delivery — Content distributor scenario',ta('p2-part')]];
+  p2fields.forEach(function(f){if(f[1])html+=ri(f[0],f[1])});
+  html+='</div>';
+
+  html+='<div class="review-section">';
+  html+='<h3>Part 3 — Demo &amp; Story Fluency</h3>';
+  var matchLabels=['Pain: Data sharing restriction','Pain: Demonstrate capability externally','Pain: Institution-wide consistency (Academic)','Pain: Procurement vendor-neutrality (Government)','Pain: Academic credit requirements','Pain: Partner needs turnkey deployment'];
+  var matchIds=['m1','m2','m3','m4','m5','m6'];
+  matchIds.forEach(function(id,i){
+    var val=document.getElementById(id)?document.getElementById(id).value:'—';
+    html+=ri('3.1 Matching — '+matchLabels[i],val||'—');
+  });
+  html+=ri('3.2 — Story framing',ta('p3-story'));
+  html+=ri('3.3 — Demo arc',ta('p3-demo'));
+  html+='</div>';
+
+  html+='<div class="review-section">';
+  html+='<h3>Part 4 — Applied Judgment</h3>';
+  var p4fields=[['Academic — Competency Assessment objection',ta('p4-acad')],['Government — Vendor-neutral procurement question',ta('p4-gov')],['Partner Delivery — White-label request',ta('p4-part')],['Enterprise — Behavior change objection',ta('p4-ent')]];
+  p4fields.forEach(function(f){if(f[1])html+=ri(f[0],f[1])});
+  html+='</div>';
+
+  document.getElementById('review-output').innerHTML=html;
+}
+
+function ri(q,a){
+  return '<div class="review-item"><div class="review-q">'+q+'</div><div class="review-a">'+(a||'<em style="color:#aaa">No answer entered</em>')+'</div></div>';
+}
+function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+function vsel(id){var el=document.getElementById(id);return el?el.options[el.selectedIndex].text:'';}
+function ta(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+</script>
+
+</body>
+</html>
