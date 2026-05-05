@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SecAI+ — Proficiency Worksheet</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#C1272D;--red-h:#A52025;--purple:#6B2D5C;
+  --grad:linear-gradient(90deg,#C1272D,#6B2D5C);
+  --text:#222222;--muted:#666666;--bg:#F5F5F5;--border:#e5e7eb;
+  --font:'Inter','Helvetica Neue',Arial,sans-serif;
+}
+body{font-family:var(--font);font-size:16px;line-height:1.6;color:var(--text);background:#f8f8f8;margin:0;padding:0}
+.page-wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+
+/* COVER */
+.cover{background:linear-gradient(135deg,#C1272D,#6B2D5C);border-radius:16px;padding:48px 40px;margin-bottom:40px;text-align:center}
+.cover-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55);margin-bottom:16px}
+.cover-title{font-size:clamp(28px,4vw,42px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:12px}
+.cover-sub{font-size:16px;color:rgba(255,255,255,.75);line-height:1.6;max-width:520px;margin:0 auto 24px}
+.cover-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.cover-pill{background:rgba(255,255,255,.15);border-radius:50px;padding:5px 16px;font-size:13px;color:rgba(255,255,255,.9);font-weight:500}
+
+/* LEARNER INFO */
+.learner-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:32px}
+.learner-card h3{font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px}
+.learner-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.learner-field label{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.learner-field input,.learner-field select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:#fff;outline:none;transition:border-color .15s}
+.learner-field input:focus,.learner-field select:focus{border-color:var(--red)}
+@media(max-width:560px){.learner-grid{grid-template-columns:1fr}}
+
+/* PROGRESS NAV */
+.progress-nav{display:flex;gap:6px;margin-bottom:32px;flex-wrap:wrap}
+.nav-step{display:flex;align-items:center;gap:8px;padding:8px 16px;background:#fff;border:1px solid var(--border);border-radius:50px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;text-decoration:none}
+.nav-step:hover{border-color:var(--red);color:var(--red)}
+.nav-step.active{background:var(--red);border-color:var(--red);color:#fff}
+.nav-step .step-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--bg);color:var(--text);font-size:11px;font-weight:800}
+.nav-step.active .step-num{background:rgba(255,255,255,.25);color:#fff}
+
+/* PART SECTIONS */
+.part-section{display:none}.part-section.active{display:block}
+
+/* PART HEADER */
+.part-header{background:#fff;border:1px solid var(--border);border-radius:12px 12px 0 0;border-bottom:none;padding:20px 28px}
+.part-tag{display:inline-block;background:var(--grad);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:50px;margin-bottom:10px}
+.part-title{font-size:26px;font-weight:800;color:var(--text);margin-bottom:6px}
+.part-meta{font-size:13px;color:var(--muted);font-style:italic}
+
+/* PROGRESS BAR */
+.part-progress{background:#fff;border:1px solid var(--border);border-top:none;border-bottom:none;padding:0 28px 16px;display:flex;align-items:center;gap:12px}
+.part-progress-label{font-size:12px;color:var(--muted);white-space:nowrap}
+.part-progress-track{flex:1;height:4px;background:var(--bg);border-radius:50px;overflow:hidden}
+.part-progress-fill{height:100%;background:var(--grad);border-radius:50px}
+.part-progress-pct{font-size:12px;font-weight:700;color:var(--red);white-space:nowrap}
+
+/* PROMPTS */
+.prompts-wrap{background:#fff;border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:20px 28px 28px}
+.prompt-card{border-radius:10px;overflow:hidden;margin-bottom:20px;border:1px solid var(--border)}
+.prompt-card:last-child{margin-bottom:0}
+.prompt-label{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--red)}
+.ch-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:50px;margin-left:4px}
+.ch-acad{background:#EDE9FE;color:#5b21b6}
+.ch-gov{background:#DCFCE7;color:#166534}
+.ch-ent{background:#FEF3C7;color:#92400e}
+.ch-part{background:#DBEAFE;color:#1e40af}
+.prompt-body{padding:16px 18px}
+.prompt-question{font-size:15px;font-weight:700;color:var(--text);line-height:1.55;margin-bottom:12px}
+.prompt-scenario{background:var(--bg);border-radius:8px;padding:13px 16px;font-size:14px;color:#333;line-height:1.65;margin-bottom:12px}
+.prompt-scenario strong{font-weight:700;color:var(--text)}
+textarea{width:100%;min-height:100px;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);resize:vertical;outline:none;transition:border-color .15s;line-height:1.6}
+textarea:focus{border-color:var(--red)}
+textarea.tall{min-height:130px}
+
+/* MATCHING */
+.match-item{margin-bottom:14px}
+.match-item:last-child{margin-bottom:0}
+.match-pain{font-size:14px;font-style:italic;color:var(--text);margin-bottom:6px;padding-left:2px}
+.match-pain::before{content:'"';color:var(--red);font-weight:700}
+.match-pain::after{content:'"';color:var(--red);font-weight:700}
+select.match-select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:14px;color:var(--text);background:#fff;outline:none;cursor:pointer;transition:border-color .15s;appearance:auto}
+select.match-select:focus{border-color:var(--red)}
+
+/* SEQUENCING */
+.seq-items{display:flex;flex-direction:column;gap:8px}
+.seq-item{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:8px;padding:10px 14px}
+.seq-item select{width:60px;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-family:var(--font);font-size:13px;color:var(--text);background:#fff;outline:none;cursor:pointer}
+.seq-item select:focus{border-color:var(--red)}
+.seq-label{font-size:14px;color:#333;line-height:1.5}
+
+/* CHANNEL TABS */
+.channel-tabs-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.ch-tab-btn{padding:7px 16px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:50px;cursor:pointer;transition:all .15s}
+.ch-tab-btn.active-acad{background:#5b21b6;color:#fff;border-color:#5b21b6}
+.ch-tab-btn.active-gov{background:#166534;color:#fff;border-color:#166534}
+.ch-tab-btn.active-ent{background:#92400e;color:#fff;border-color:#92400e}
+.ch-tab-btn.active-part{background:#1e40af;color:#fff;border-color:#1e40af}
+.ch-tab-btn:hover:not([class*="active"]){border-color:var(--red);color:var(--red)}
+.ch-tab-panel{display:none}.ch-tab-panel.active{display:block}
+.ch-tab-note{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:16px;padding:10px 14px;background:var(--bg);border-radius:8px}
+
+/* PART NAV */
+.part-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+.btn-prev,.btn-next{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:50px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .15s}
+.btn-prev{background:#fff;color:var(--text);border:1px solid var(--border)}
+.btn-prev:hover{border-color:var(--red);color:var(--red)}
+.btn-next{background:var(--red);color:#fff}
+.btn-next:hover{background:var(--red-h)}
+.btn-download{display:inline-flex;align-items:center;gap:8px;padding:11px 28px;border-radius:50px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;border:none;background:var(--grad);color:#fff;transition:opacity .15s,transform .1s}
+.btn-download:hover{opacity:.9;transform:scale(1.02)}
+
+/* REVIEW */
+.review-section{background:#fff;border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:20px}
+.review-section h3{font-size:13px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px}
+.review-item{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--bg)}
+.review-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.review-q{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.review-a{font-size:14px;color:var(--text);line-height:1.6;white-space:pre-wrap;min-height:20px}
+
+@media print{
+  .progress-nav,.part-nav,.nav-step{display:none}
+  .part-section{display:block!important}
+  .review-section{break-inside:avoid}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">CompTIA Sales Enablement · Proficiency Worksheet</div>
+  <div class="cover-title">SecAI+<br>Proficiency Worksheet</div>
+  <p class="cover-sub">Complete all four parts and submit to your sales enablement manager for evaluation. Results within 5 business days.</p>
+  <div class="cover-pills">
+    <span class="cover-pill">4 Parts</span>
+    <span class="cover-pill">~20–25 min</span>
+    <span class="cover-pill">Certificate of Proficiency</span>
+  </div>
+</div>
+
+<!-- LEARNER INFO -->
+<div class="learner-card">
+  <h3>Your Information</h3>
+  <div class="learner-grid">
+    <div class="learner-field"><label>Full Name</label><input type="text" id="f-name" placeholder="First Last"></div>
+    <div class="learner-field">
+      <label>Primary Sales Vertical</label>
+      <select id="f-channel">
+        <option value="">Select your channel</option>
+        <option value="Academic">Academic</option>
+        <option value="Government">Government</option>
+        <option value="Enterprise">Enterprise</option>
+        <option value="Partner Delivery">Partner Delivery</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS NAV -->
+<div class="progress-nav">
+  <a class="nav-step active" onclick="showPart(1)" href="#"><span class="step-num">1</span> Product Knowledge</a>
+  <a class="nav-step" onclick="showPart(2)" href="#"><span class="step-num">2</span> Customer Application</a>
+  <a class="nav-step" onclick="showPart(3)" href="#"><span class="step-num">3</span> Demo &amp; Story Fluency</a>
+  <a class="nav-step" onclick="showPart(4)" href="#"><span class="step-num">4</span> Applied Judgment</a>
+  <a class="nav-step" onclick="showPart(5)" href="#"><span class="step-num">✓</span> Review &amp; Download</a>
+</div>
+
+<!-- ══════════════════════════════
+     PART 1 — PRODUCT KNOWLEDGE
+══════════════════════════════ -->
+<div class="part-section active" id="part1">
+  <div class="part-header">
+    <div class="part-tag">Part 1 of 4</div>
+    <div class="part-title">Product Knowledge</div>
+    <div class="part-meta">~5 min · Short-answer prompts · Demonstrates foundational product accuracy</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Part 1 of 4</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:25%"></div></div>
+    <span class="part-progress-pct">25%</span>
+  </div>
+  <div class="prompts-wrap">
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.1</div>
+      <div class="prompt-body">
+        <div class="prompt-question">Describe CompTIA SecAI+ in two to three sentences as you would introduce it to a customer who has never heard of it.</div>
+        <textarea id="p1-1" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.2</div>
+      <div class="prompt-body">
+        <div class="prompt-question">What are the four exam domains of SecAI+, and what percentage of the exam does each represent?</div>
+        <textarea id="p1-2" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.3</div>
+      <div class="prompt-body">
+        <div class="prompt-question">What makes SecAI+ an "expansion certification" rather than a traditional role-based certification? Use one specific example to illustrate.</div>
+        <textarea id="p1-3" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.4</div>
+      <div class="prompt-body">
+        <div class="prompt-question">Describe the content breakdown of SecAI+ CertMaster Perform: what percentage is hands-on, how many live labs, how many AI Role-Play Activities, and approximate content hours.</div>
+        <textarea id="p1-4" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.5</div>
+      <div class="prompt-body">
+        <div class="prompt-question">Which four learning product offerings are available for SecAI+? When would you recommend each?</div>
+        <textarea id="p1-5" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 1.6</div>
+      <div class="prompt-body">
+        <div class="prompt-question">Name two market demand signals that support the urgency of SecAI+ conversations with customers.</div>
+        <textarea id="p1-6" class="tall" placeholder="Write your answer here..."></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="part-nav">
+    <span></span>
+    <button class="btn-next" onclick="showPart(2)">Next: Customer Application →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PART 2 — CUSTOMER APPLICATION
+══════════════════════════════ -->
+<div class="part-section" id="part2">
+  <div class="part-header">
+    <div class="part-tag">Part 2 of 4</div>
+    <div class="part-title">Customer Application</div>
+    <div class="part-meta">~5 min · Channel-specific scenarios · Complete at least two tabs</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Part 2 of 4</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:50%"></div></div>
+    <span class="part-progress-pct">50%</span>
+  </div>
+  <div class="prompts-wrap">
+
+    <div class="ch-tab-note">Select at least two channels and complete the scenario for each. Start with your primary channel, then complete at least one more.</div>
+
+    <div class="channel-tabs-nav">
+      <button class="ch-tab-btn" id="chtab-acad" onclick="switchChTab('acad')">Academic</button>
+      <button class="ch-tab-btn" id="chtab-gov" onclick="switchChTab('gov')">Government</button>
+      <button class="ch-tab-btn" id="chtab-ent" onclick="switchChTab('ent')">Enterprise</button>
+      <button class="ch-tab-btn" id="chtab-part" onclick="switchChTab('part')">Partner Delivery</button>
+    </div>
+
+    <!-- ACADEMIC -->
+    <div class="ch-tab-panel" id="chtab-panel-acad">
+      <div class="prompt-card">
+        <div class="prompt-label">Prompt 2.1 <span class="ch-tag ch-acad">Academic</span></div>
+        <div class="prompt-body">
+          <div class="prompt-scenario"><strong>Dr. James Osei, Associate Dean of Cybersecurity Programs</strong> at a mid-sized regional university says: "Our industry advisory board is asking us to add AI security to our curriculum. We use Security+ now. I need to know if SecAI+ fits and how to explain it to my faculty senate." Write your recommended approach in 4–6 sentences.</div>
+          <textarea id="p2-acad" class="tall" placeholder="Write your approach here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- GOVERNMENT -->
+    <div class="ch-tab-panel" id="chtab-panel-gov">
+      <div class="prompt-card">
+        <div class="prompt-label">Prompt 2.2 <span class="ch-tag ch-gov">Government</span></div>
+        <div class="prompt-body">
+          <div class="prompt-scenario"><strong>Lt. Col. Aaron Pierce, Cybersecurity Training Lead</strong> at a federal agency says: "We need to upskill 40 analysts before our AI-integrated threat detection system goes live in 12 months. We need something that builds real skills — not just exam prep." Write your recommended approach in 4–6 sentences.</div>
+          <textarea id="p2-gov" class="tall" placeholder="Write your approach here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENTERPRISE -->
+    <div class="ch-tab-panel" id="chtab-panel-ent">
+      <div class="prompt-card">
+        <div class="prompt-label">Prompt 2.3 <span class="ch-tag ch-ent">Enterprise</span></div>
+        <div class="prompt-body">
+          <div class="prompt-scenario"><strong>Marina Petrov, VP of Information Security</strong> at a fintech company says: "We've just had an internal audit that flagged gaps in AI monitoring and access controls. My CISO needs to see a training plan that directly addresses these findings." Write your recommended approach in 4–6 sentences.</div>
+          <textarea id="p2-ent" class="tall" placeholder="Write your approach here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARTNER DELIVERY -->
+    <div class="ch-tab-panel" id="chtab-panel-part">
+      <div class="prompt-card">
+        <div class="prompt-label">Prompt 2.4 <span class="ch-tag ch-part">Partner Delivery</span></div>
+        <div class="prompt-body">
+          <div class="prompt-scenario"><strong>Sam Liang, Director of Curriculum</strong> at a CompTIA training partner says: "We want to add SecAI+ to our catalog, but I'm worried our instructors don't know enough about AI to teach it effectively. What resources do you have?" Write your recommended approach in 4–6 sentences.</div>
+          <textarea id="p2-part" class="tall" placeholder="Write your approach here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="part-nav">
+    <button class="btn-prev" onclick="showPart(1)">← Previous</button>
+    <button class="btn-next" onclick="showPart(3)">Next: Demo &amp; Story Fluency →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PART 3 — DEMO & STORY FLUENCY
+══════════════════════════════ -->
+<div class="part-section" id="part3">
+  <div class="part-header">
+    <div class="part-tag">Part 3 of 4</div>
+    <div class="part-title">Demo &amp; Story Fluency</div>
+    <div class="part-meta">~5 min · Sequencing, matching &amp; story framing · Demonstrates product demo and story framework mastery</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Part 3 of 4</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:75%"></div></div>
+    <span class="part-progress-pct">75%</span>
+  </div>
+  <div class="prompts-wrap">
+
+    <!-- 3.1 SEQUENCING -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 3.1 — Sequence the Demo Steps</div>
+      <div class="prompt-body">
+        <div class="prompt-question">A customer asks you to walk them through the CertMaster Perform learner journey. Number these steps in the correct demonstration sequence (1 = first, 5 = last).</div>
+        <div class="seq-items">
+          <div class="seq-item">
+            <select id="s1"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            <span class="seq-label">View the lab completion scorecard and tracking report</span>
+          </div>
+          <div class="seq-item">
+            <select id="s2"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            <span class="seq-label">Open the module overview and lesson structure</span>
+          </div>
+          <div class="seq-item">
+            <select id="s3"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            <span class="seq-label">Launch a VM lab and show the working environment</span>
+          </div>
+          <div class="seq-item">
+            <select id="s4"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            <span class="seq-label">Open an AI Role-Play Activity and show the scenario + AI actor interface</span>
+          </div>
+          <div class="seq-item">
+            <select id="s5"><option value="">–</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+            <span class="seq-label">Show the interactive element embedded in a text lesson</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.2 MATCHING -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 3.2 — Match Features to Pain Points</div>
+      <div class="prompt-body">
+        <div class="prompt-question">Match each SecAI+ feature to the customer pain point it BEST addresses.</div>
+        <div class="match-item">
+          <div class="match-pain">19 AI Role-Play Activities</div>
+          <select class="match-select" id="m1">
+            <option value="">Select the best match...</option>
+            <option>Analysts need to practice reasoning through AI threat scenarios</option>
+            <option>Team needs hands-on technical skills, not just exam prep</option>
+            <option>Need to show the board we have an AI governance framework</option>
+            <option>Can't add a full-semester course — students are at credit load</option>
+          </select>
+        </div>
+        <div class="match-item">
+          <div class="match-pain">17 VM Labs with Azure environments</div>
+          <select class="match-select" id="m2">
+            <option value="">Select the best match...</option>
+            <option>Analysts need to practice reasoning through AI threat scenarios</option>
+            <option>Team needs hands-on technical skills, not just exam prep</option>
+            <option>Need to show the board we have an AI governance framework</option>
+            <option>Can't add a full-semester course — students are at credit load</option>
+          </select>
+        </div>
+        <div class="match-item">
+          <div class="match-pain">Domain 4 — AI Governance, Risk &amp; Compliance</div>
+          <select class="match-select" id="m3">
+            <option value="">Select the best match...</option>
+            <option>Analysts need to practice reasoning through AI threat scenarios</option>
+            <option>Team needs hands-on technical skills, not just exam prep</option>
+            <option>Need to show the board we have an AI governance framework</option>
+            <option>Can't add a full-semester course — students are at credit load</option>
+          </select>
+        </div>
+        <div class="match-item">
+          <div class="match-pain">~20 content hours</div>
+          <select class="match-select" id="m4">
+            <option value="">Select the best match...</option>
+            <option>Analysts need to practice reasoning through AI threat scenarios</option>
+            <option>Team needs hands-on technical skills, not just exam prep</option>
+            <option>Need to show the board we have an AI governance framework</option>
+            <option>Can't add a full-semester course — students are at credit load</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.3 STORY OPENING — CHANNEL AGNOSTIC -->
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 3.3 — Story Opening</div>
+      <div class="prompt-body">
+        <div class="prompt-question">A customer has agreed to a 20-minute intro call. They've mentioned that their team is dealing with growing pressure to demonstrate AI security competency — but they haven't defined exactly what that looks like yet. Write the opening 3–4 sentences of your product story for this conversation. Apply the Story Framework: lead with Story Purpose, and establish your Narrative Thread.</div>
+        <textarea id="p3-story" style="min-height:150px" placeholder="Write your opening story here..."></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="part-nav">
+    <button class="btn-prev" onclick="showPart(2)">← Previous</button>
+    <button class="btn-next" onclick="showPart(4)">Next: Applied Judgment →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PART 4 — APPLIED JUDGMENT
+══════════════════════════════ -->
+<div class="part-section" id="part4">
+  <div class="part-header">
+    <div class="part-tag">Part 4 of 4</div>
+    <div class="part-title">Applied Judgment</div>
+    <div class="part-meta">~5 min · Complex multi-factor scenarios · Demonstrates judgment under competing priorities</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Part 4 of 4</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:100%"></div></div>
+    <span class="part-progress-pct">100%</span>
+  </div>
+  <div class="prompts-wrap">
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 4.1 — Budget vs. Coverage</div>
+      <div class="prompt-body">
+        <div class="prompt-scenario">A CISO at a midsize healthcare company has a $35,000 L&D budget. She has 12 security analysts who all need SecAI+ preparation, but she also needs to renew Security+ for 6 staff members. CertMaster Perform is the full-price option; CertMaster Labs is a lower-cost standalone. Write your recommendation (3–5 sentences) and the reasoning behind it.</div>
+        <textarea id="p4-1" class="tall" placeholder="Write your recommendation and reasoning..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 4.2 — Breadth vs. Depth</div>
+      <div class="prompt-body">
+        <div class="prompt-scenario">A university consortium wants to roll out SecAI+ to 200 students across 8 campuses in the first semester. An alternative is to pilot with 25 students on one campus first. The L&D director is unsure which approach creates more value. Write your recommendation (3–5 sentences) and the reasoning behind it.</div>
+        <textarea id="p4-2" class="tall" placeholder="Write your recommendation and reasoning..."></textarea>
+      </div>
+    </div>
+
+    <div class="prompt-card">
+      <div class="prompt-label">Prompt 4.3 — Compliance vs. Speed</div>
+      <div class="prompt-body">
+        <div class="prompt-scenario">A federal agency training director wants to start SecAI+ training immediately, but her contracting officer says they must wait for DoD 8140 approval before using approved training funds. Her analysts have a deployment deadline in 8 months. Write your recommendation (3–5 sentences).</div>
+        <textarea id="p4-3" class="tall" placeholder="Write your recommendation..."></textarea>
+      </div>
+    </div>
+
+  </div>
+  <div class="part-nav">
+    <button class="btn-prev" onclick="showPart(3)">← Previous</button>
+    <button class="btn-next" onclick="showPart(5)">Review &amp; Download →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     PART 5 — REVIEW & DOWNLOAD
+══════════════════════════════ -->
+<div class="part-section" id="part5">
+  <div class="part-header">
+    <div class="part-tag">Review &amp; Submit</div>
+    <div class="part-title">Review Your Worksheet</div>
+    <div class="part-meta">Review your answers below, then save as a PDF and send to Revenue Enablement.</div>
+  </div>
+  <div class="part-progress">
+    <span class="part-progress-label">Complete</span>
+    <div class="part-progress-track"><div class="part-progress-fill" style="width:100%"></div></div>
+    <span class="part-progress-pct">✓</span>
+  </div>
+  <div class="prompts-wrap">
+    <div style="background:#F5F5F5;border-radius:10px;padding:16px 20px;margin-bottom:20px;border-left:3px solid #C1272D;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#C1272D;margin-bottom:8px;">How to Submit</div>
+      <p style="font-size:14px;color:#333;line-height:1.65;margin-bottom:8px;"><strong>Step 1:</strong> Review your answers below. Navigate back through sections using the buttons above to make any edits.</p>
+      <p style="font-size:14px;color:#333;line-height:1.65;margin-bottom:8px;"><strong>Step 2:</strong> Click <strong>Save as PDF</strong> below. When your browser print dialog opens, set the destination to <strong>Save as PDF</strong> and save the file to your computer.</p>
+      <p style="font-size:14px;color:#333;line-height:1.65;"><strong>Step 3:</strong> Email the PDF to <strong>Revenue Enablement</strong> with the subject line: <em>SecAI+ Proficiency Worksheet — [Your Name]</em>. Results will be returned within 5 business days.</p>
+    </div>
+    <div id="review-output"></div>
+  </div>
+  <div class="part-nav">
+    <button class="btn-prev" onclick="showPart(4)">← Previous</button>
+    <button class="btn-download" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Save as PDF
+    </button>
+  </div>
+</div>
+
+</div>
+
+<script>
+function showPart(n){
+  document.querySelectorAll('.part-section').forEach(function(s){s.classList.remove('active')});
+  document.querySelectorAll('.nav-step').forEach(function(s){s.classList.remove('active')});
+  document.getElementById('part'+n).classList.add('active');
+  document.querySelectorAll('.nav-step')[n-1].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(n===5) buildReview();
+}
+
+function switchChTab(ch){
+  document.querySelectorAll('.ch-tab-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.ch-tab-btn').forEach(function(b){b.className='ch-tab-btn'});
+  document.getElementById('chtab-panel-'+ch).classList.add('active');
+  document.getElementById('chtab-'+ch).classList.add('active-'+ch);
+}
+
+function buildReview(){
+  var html='';
+  var name=v('f-name')||'—';
+  var channel=vsel('f-channel')||'—';
+
+  html+='<div class="review-section"><h3>Learner Information</h3>';
+  html+=ri('Name',name);
+  html+=ri('Primary Sales Vertical',channel);
+  html+='</div>';
+
+  html+='<div class="review-section"><h3>Part 1 — Product Knowledge</h3>';
+  html+=ri('1.1 — Describe SecAI+',ta('p1-1'));
+  html+=ri('1.2 — Four exam domains and percentages',ta('p1-2'));
+  html+=ri('1.3 — Expansion certification explanation',ta('p1-3'));
+  html+=ri('1.4 — CertMaster Perform content breakdown',ta('p1-4'));
+  html+=ri('1.5 — Four learning product offerings',ta('p1-5'));
+  html+=ri('1.6 — Market demand signals',ta('p1-6'));
+  html+='</div>';
+
+  html+='<div class="review-section"><h3>Part 2 — Customer Application</h3>';
+  var p2=[['Academic — Dr. Osei scenario',ta('p2-acad')],['Government — Lt. Col. Pierce scenario',ta('p2-gov')],['Enterprise — Marina Petrov scenario',ta('p2-ent')],['Partner Delivery — Sam Liang scenario',ta('p2-part')]];
+  p2.forEach(function(f){if(f[1])html+=ri(f[0],f[1])});
+  html+='</div>';
+
+  html+='<div class="review-section"><h3>Part 3 — Demo &amp; Story Fluency</h3>';
+  var seqLabels=['Scorecard and tracking report','Module overview and lesson structure','VM Lab environment','AI Role-Play Activity','Interactive in text lesson'];
+  var seqIds=['s1','s2','s3','s4','s5'];
+  seqIds.forEach(function(id,i){
+    var val=document.getElementById(id)?document.getElementById(id).value:'—';
+    html+=ri('3.1 Sequencing — '+seqLabels[i],val||'—');
+  });
+  var matchLabels=['19 AI Role-Play Activities','17 VM Labs with Azure','Domain 4 — AI GRC','~20 content hours'];
+  var matchIds=['m1','m2','m3','m4'];
+  matchIds.forEach(function(id,i){
+    var val=document.getElementById(id)?document.getElementById(id).value:'—';
+    html+=ri('3.2 Matching — '+matchLabels[i],val||'—');
+  });
+  html+=ri('3.3 — Story opening',ta('p3-story'));
+  html+='</div>';
+
+  html+='<div class="review-section"><h3>Part 4 — Applied Judgment</h3>';
+  html+=ri('4.1 — Budget vs. Coverage',ta('p4-1'));
+  html+=ri('4.2 — Breadth vs. Depth',ta('p4-2'));
+  html+=ri('4.3 — Compliance vs. Speed',ta('p4-3'));
+  html+='</div>';
+
+  document.getElementById('review-output').innerHTML=html;
+}
+
+function ri(q,a){return '<div class="review-item"><div class="review-q">'+q+'</div><div class="review-a">'+(a||'<em style="color:#aaa">No answer entered</em>')+'</div></div>';}
+function v(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+function vsel(id){var el=document.getElementById(id);if(!el)return'';return el.options[el.selectedIndex]?el.options[el.selectedIndex].text:'';}
+function ta(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+</script>
+</body>
+</html>
